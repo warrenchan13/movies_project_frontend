@@ -66,20 +66,22 @@ const Reviews = ({ getSingleMovie, movie, reviews, setReviews }) => {
               </Row>
             </>
           }
-          {reviews?.map((review) => {
-            return (
-              <>
-                <Row>
-                  <Col>{review.body}</Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <hr />
-                  </Col>
-                </Row>
-              </>
-            );
-          })}
+          {reviews && reviews.length
+            ? reviews.map((review) => {
+                return (
+                  <>
+                    <Row>
+                      <Col>{review.body}</Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <hr />
+                      </Col>
+                    </Row>
+                  </>
+                );
+              })
+            : null}
         </Col>
       </Row>
       <Row>

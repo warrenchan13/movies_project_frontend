@@ -6,9 +6,13 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
 import Header from "./components/header/Header";
 import Trailer from "./components/trailer/Trailer";
+import Reviews from "./components/reviews/Reviews";
+import NotFound from "./components/notFound/NotFound";
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [movie, setMovie] = useState();
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     getMovies();
@@ -19,7 +23,23 @@ function App() {
       const response = await axios.get("http://localhost:8080/api/movies");
       setMovies(response.data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+    }
+  };
+
+  const getSingleMovie = async (movieId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/movie/${movieId}`
+      );
+
+      const singleMovie = response.data;
+
+      setMovie(singleMovie);
+
+      setReviews(singleMovie.reviewIds);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -30,6 +50,18 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home movies={movies} />} />
           <Route path="/trailer/:ytTrailerId" element={<Trailer />}></Route>
+          <Route
+            path="/reviews/:movieId"
+            element={
+              <Reviews
+                getSingleMovie={getSingleMovie}
+                movie={movie}
+                reviews={reviews}
+                setReviews={setReviews}
+              />
+            }
+          ></Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Route>
       </Routes>
     </div>

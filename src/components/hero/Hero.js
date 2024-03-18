@@ -17,7 +17,7 @@ const Hero = ({ movies }) => {
       <Carousel>
         {movies.map((movie) => {
           return (
-            <Paper>
+            <Paper key={movie.imdbId}>
               <div className="movie-card-container">
                 <div
                   className="movie-card"
